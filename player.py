@@ -72,6 +72,84 @@ class IPTVPlayer:
             else:
                 print("No programs currently live")
     
+    def filter_by_decade(self) -> None:
+        """Filter programs by decade"""
+        print("\n" + "=" * 80)
+        print("FILTER BY DECADE")
+        print("=" * 80)
+        
+        available_decades = self.epg_manager.get_available_decades()
+        
+        if not available_decades:
+            print("No decade information available")
+            return
+        
+        print("\nAvailable Decades:")
+        for idx, decade in enumerate(available_decades, 1):
+            print(f"  {idx}. {decade}")
+        
+        choice = input("\nSelect decade number (or press Enter to cancel): ").strip()
+        
+        if not choice:
+            return
+        
+        try:
+            decade_idx = int(choice) - 1
+            if 0 <= decade_idx < len(available_decades):
+                selected_decade = available_decades[decade_idx]
+                programs = self.epg_manager.get_programs_by_decade(selected_decade)
+                
+                print(f"\n{selected_decade} Programs:")
+                print("-" * 80)
+                if programs:
+                    for program in programs[:20]:
+                        print(program)
+                else:
+                    print(f"No programs found for {selected_decade}")
+            else:
+                print("Invalid selection")
+        except ValueError:
+            print("Invalid input")
+    
+    def filter_by_year(self) -> None:
+        """Filter programs by year"""
+        print("\n" + "=" * 80)
+        print("FILTER BY YEAR")
+        print("=" * 80)
+        
+        available_years = self.epg_manager.get_available_years()
+        
+        if not available_years:
+            print("No year information available")
+            return
+        
+        print("\nAvailable Years:")
+        for idx, year in enumerate(available_years, 1):
+            print(f"  {idx}. {year}")
+        
+        choice = input("\nSelect year number (or press Enter to cancel): ").strip()
+        
+        if not choice:
+            return
+        
+        try:
+            year_idx = int(choice) - 1
+            if 0 <= year_idx < len(available_years):
+                selected_year = available_years[year_idx]
+                programs = self.epg_manager.get_programs_by_year(selected_year)
+                
+                print(f"\n{selected_year} Programs:")
+                print("-" * 80)
+                if programs:
+                    for program in programs[:20]:
+                        print(program)
+                else:
+                    print(f"No programs found for {selected_year}")
+            else:
+                print("Invalid selection")
+        except ValueError:
+            print("Invalid input")
+    
     def play_channel(self) -> None:
         """Play a channel"""
         self.list_channels()
